@@ -1,0 +1,11 @@
+{
+  "name": "focuslock",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Unpacked Chrome Manifest V3 extension with a local test page",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "generate:assets": "node tools/generate-assets.mjs"
+  }
+}

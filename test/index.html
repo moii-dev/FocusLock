@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StayActive · локальная проверка</title>
+  <script src="early-probe.js"></script>
+  <link rel="stylesheet" href="test.css">
+</head>
+<body>
+  <main>
+    <header><span class="logo">✓</span><div><h1>StayActive <span>проверка</span></h1><p>Видимость страницы, фокус окна и точность времени.</p></div></header>
+    <section class="instructions">
+      <p>Сначала посмотрите значения без расширения. Затем включите StayActive для <strong id="host"></strong> и перезагрузите страницу.</p>
+      <p>Переключите вкладку, перейдите в другое окно или сверните Chrome. Вернитесь и сравните счётчики. Для событий и раннего внедрения откройте блоки ниже.</p>
+      <div class="actions"><a href="other.html" target="_blank" rel="noopener">Открыть вторую вкладку ↗</a><button id="reset" type="button">Сбросить счётчики</button></div>
+      <p id="extension-status" role="status">Режим расширения: загрузка…</p>
+    </section>
+    <h2>Состояние документа</h2>
+    <div class="metrics">
+      <article><code>document.hidden</code><output id="hidden"></output></article>
+      <article><code>document.visibilityState</code><output id="visibility"></output></article>
+      <article><code>document.hasFocus()</code><output id="focus-state"></output></article>
+    </div>
+    <h2>События, полученные сайтом</h2>
+    <div class="metrics">
+      <article><code>window blur</code><output id="blur"></output></article>
+      <article><code>window focus</code><output id="focus"></output></article>
+      <article><code>visibilitychange</code><output id="visibilitychange"></output></article>
+    </div>
+    <h2>Секундный таймер</h2>
+    <div class="metrics">
+      <article><span>По вызовам interval</span><output id="ticks"></output><small>Число выполненных секундных callbacks</small></article>
+      <article><span>По времени начала</span><output id="elapsed"></output><small>Надёжный отсчёт через Date.now()</small></article>
+      <article><span>Расхождение</span><output id="drift"></output><small>Секунды минус количество callbacks</small></article>
+    </div>
+    <p class="note">Фоновый интерфейс может обновляться редко. Время по дате начала останется корректным при следующем выполнении JS. Счётчик callbacks с восстановлением — приближение, максимум 10 вызовов за один запуск.</p>
+    <section class="form-check">
+      <h2>Таймер с остановкой через window.blur</h2>
+      <p>Этот локальный пример повторяет механизм указанного сайта: запуск на load/focus, остановка на blur. Сетевых запросов и получения услуг нет.</p>
+      <output id="countdown"></output><p id="countdown-signals"></p>
+      <p id="focus-bubbling"></p>
+    </section>
+    <section class="form-check">
+      <h2>Обычный фокус полей</h2>
+      <p>Переключение между полями должно продолжать вызывать события элементов.</p>
+      <div class="inputs"><label>Поле A<input id="input-a" placeholder="Нажмите здесь"></label><label>Поле B<input id="input-b" placeholder="Затем здесь"></label></div>
+      <p id="element-counts"></p>
+      <button id="synthetic" type="button">Отправить синтетический blur окна</button>
+      <small>Синтетическое событие должно увеличить счётчик blur даже при включённой защите.</small>
+    </section>
+    <details open><summary>Значения в первом скрипте страницы</summary><pre id="early"></pre></details>
+    <details><summary>Page Lifecycle и журнал событий</summary><pre id="lifecycle"></pre><pre id="events"></pre></details>
+    <details><summary>Диагностика расширения</summary><p>Включите Developer diagnostics в popup. В консоли страницы разрешите уровень Verbose и фильтруйте по StayActive. Здесь отображаются счётчики подавленных событий.</p><pre id="diagnostic"></pre></details>
+    <footer>Локальный стенд FocusLock. Никакие данные не отправляются.</footer>
+  </main>
+  <script src="test.js" type="module"></script>
+</body>
+</html>
